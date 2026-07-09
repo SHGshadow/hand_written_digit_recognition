@@ -1,12 +1,11 @@
 import numpy as np
 
-from model_utils import model
-from model_utils import preprocess_image
+from backend.model_utils import model, preprocess_image
 
 
-def predict_digit(image):
+def predict_digit(image_file):
 
-    image = preprocess_image(image)
+    image = preprocess_image(image_file)
 
     prediction = model.predict(image, verbose=0)
 
