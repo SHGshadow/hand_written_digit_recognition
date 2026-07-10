@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Handwritten Digit Recognition</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Handwritten Digit Recognition</h1>
+
+        <canvas
+            id="canvas"
+            width="280"
+            height="280">
+        </canvas>
+
+        <div class="buttons">
+
+            <button id="predictBtn">
+                Predict
+            </button>
+
+            <button id="clearBtn">
+                Clear
+            </button>
+
+        </div>
+
+        <div class="result">
+
+            <h2>
+                Prediction:
+                <span id="prediction">-</span>
+            </h2>
+
+            <h3>
+                Confidence:
+                <span id="confidence">-</span>
+            </h3>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

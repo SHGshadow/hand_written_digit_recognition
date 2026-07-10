@@ -2,12 +2,20 @@ from fastapi import FastAPI, UploadFile, File
 
 from backend.predict import predict_digit
 from backend.schemas import PredictionResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title="Handwritten Digit Recognition API",
     version="1.0.0"
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],      # For development
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def home():
