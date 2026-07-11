@@ -5,7 +5,8 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Handwritten Digit Recognition</title>
 
@@ -19,13 +20,17 @@
 
         <h1>Handwritten Digit Recognition</h1>
 
+        <p class="subtitle">
+            Draw a digit between 0 and 9
+        </p>
+
         <canvas
             id="canvas"
             width="280"
             height="280">
         </canvas>
 
-        <div class="buttons">
+        <div class="button-group">
 
             <button id="predictBtn">
                 Predict
@@ -37,17 +42,23 @@
 
         </div>
 
-        <div class="result">
+        <div class="result-card">
 
             <h2>
-                Prediction:
-                <span id="prediction">-</span>
+                Prediction
             </h2>
 
-            <h3>
-                Confidence:
-                <span id="confidence">-</span>
-            </h3>
+            <p id="prediction">
+                -
+            </p>
+
+            <h2>
+                Confidence
+            </h2>
+
+            <p id="confidence">
+                -
+            </p>
 
         </div>
 

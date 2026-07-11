@@ -1,17 +1,36 @@
-const canvas = document.getElementById("canvas");
+console.log("Page loaded at:", new Date().toLocaleTimeString());
+// ===============================
+// Get Canvas
+// ===============================
 
+const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+// ===============================
+// Canvas Style
+// ===============================
+
 ctx.fillStyle = "black";
-ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 ctx.strokeStyle = "white";
 ctx.lineWidth = 18;
 ctx.lineCap = "round";
+ctx.lineJoin = "round";
+
+// ===============================
+// Drawing Variables
+// ===============================
 
 let drawing = false;
 
-canvas.addEventListener("mousedown", (event) => {
+// ===============================
+// Start Drawing
+// ===============================
+
+canvas.addEventListener("mousedown", startDrawing);
+
+function startDrawing(event) {
 
     drawing = true;
 
@@ -24,55 +43,76 @@ canvas.addEventListener("mousedown", (event) => {
         event.clientY - rect.top
     );
 
-});
+}
 
-canvas.addEventListener("mouseup",()=>{
+// ===============================
+// Draw
+// ===============================
+
+canvas.addEventListener("mousemove", draw);
+
+function draw(event) {
+
+    if (!drawing) return;
+
+    const rect = canvas.getBoundingClientRect();
+
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    ctx.lineTo(x, y);
+    ctx.stroke();
+
+}
+
+// ===============================
+// Stop Drawing
+// ===============================
+
+canvas.addEventListener("mouseup", stopDrawing);
+canvas.addEventListener("mouseleave", stopDrawing);
+
+function stopDrawing() {
 
     drawing = false;
 
     ctx.beginPath();
 
-});
+}
 
-canvas.addEventListener("mousemove",(event)=>{
+// ===============================
+// Clear Canvas
+// ===============================
 
-    if(!drawing) return;
+document
+    .getElementById("clearBtn")
+    .addEventListener("click", clearCanvas);
 
-    const rect = canvas.getBoundingClientRect();
-
-    const x = event.clientX - rect.left;
-
-    const y = event.clientY - rect.top;
-
-    ctx.lineTo(x,y);
-
-    ctx.stroke();
-
-    ctx.beginPath();
-
-    ctx.moveTo(x,y);
-
-});
-
-document.getElementById("clearBtn").addEventListener("click", () => {
+function clearCanvas() {
 
     ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Reset drawing path
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
     ctx.beginPath();
 
-    // Clear previous prediction
     document.getElementById("prediction").textContent = "-";
     document.getElementById("confidence").textContent = "-";
 
-});
+}
 
-function isCanvasBlank(canvas) {
+// ===============================
+// Check if Canvas is Empty
+// ===============================
 
-    const context = canvas.getContext("2d");
+function isCanvasBlank() {
 
-    const pixels = context.getImageData(
+    const pixels = ctx.getImageData(
         0,
         0,
         canvas.width,
@@ -88,16 +128,25 @@ function isCanvasBlank(canvas) {
         ) {
             return false;
         }
+
     }
 
     return true;
+
 }
 
-const predictBtn = document.getElementById("predictBtn");
+// ===============================
+// Predict Button
+// ===============================
 
-predictBtn.addEventListener("click", async () => {
+document
+    .getElementById("predictBtn")
+    .addEventListener("click", predictDigit);
 
-    if (isCanvasBlank(canvas)) {
+async function predictDigit() {
+    alert("Predict function started");
+
+    if (isCanvasBlank()) {
 
         alert("Please draw a digit first.");
 
@@ -105,16 +154,20 @@ predictBtn.addEventListener("click", async () => {
 
     }
 
-    // Convert canvas to Blob
+    document.getElementById("prediction").textContent = "...";
+    document.getElementById("confidence").textContent = "Predicting...";
+
     canvas.toBlob(async (blob) => {
 
         const formData = new FormData();
 
-        formData.append("file", blob, "digit.png");
+        formData.append(
+            "file",
+            blob,
+            "digit.png"
+        );
 
         try {
-            document.getElementById("prediction").textContent = "...";
-            document.getElementById("confidence").textContent = "Predicting...";
 
             const response = await fetch(
                 "http://127.0.0.1:8000/predict",
@@ -126,11 +179,17 @@ predictBtn.addEventListener("click", async () => {
 
             if (!response.ok) {
 
-                throw new Error(`HTTP Error ${response.status}`);
+                throw new Error(
+                    `Server Error: ${response.status}`
+                );
 
             }
 
-            const result = await response.json();
+            const text = await response.text();
+
+            console.log("Raw response:", text);
+
+            const result = JSON.parse(text);
 
             document.getElementById("prediction").textContent =
                 result.digit;
@@ -141,12 +200,15 @@ predictBtn.addEventListener("click", async () => {
         }
         catch (error) {
 
-            alert("Unable to connect to the server.");
-
             console.error(error);
+
+            document.getElementById("prediction").textContent = "Error";
+            document.getElementById("confidence").textContent = "-";
+
+            alert("Unable to connect to the backend.");
 
         }
 
     }, "image/png");
 
-});
+}

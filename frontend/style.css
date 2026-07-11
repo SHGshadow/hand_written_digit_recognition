@@ -6,7 +6,7 @@
 
 body{
 
-    background:#f4f6f8;
+    background:#edf2f7;
 
     font-family:Arial, Helvetica, sans-serif;
 
@@ -22,29 +22,47 @@ body{
 
 .container{
 
-    background:white;
+    width:420px;
 
-    padding:30px;
+    background:white;
 
     border-radius:15px;
 
+    padding:30px;
+
     text-align:center;
 
-    box-shadow:0 0 15px rgba(0,0,0,.15);
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+
+h1{
+
+    margin-bottom:10px;
+
+}
+
+.subtitle{
+
+    color:#666;
+
+    margin-bottom:25px;
 
 }
 
 canvas{
 
-    border:3px solid black;
+    border:3px solid #333;
 
     background:black;
+
+    border-radius:10px;
 
     cursor:crosshair;
 
 }
 
-.buttons{
+.button-group{
 
     margin-top:20px;
 
@@ -52,23 +70,23 @@ canvas{
 
 button{
 
-    padding:12px 30px;
+    padding:12px 25px;
 
-    margin:10px;
+    font-size:18px;
 
     border:none;
 
     border-radius:8px;
 
-    font-size:18px;
-
     cursor:pointer;
+
+    margin:0 10px;
 
 }
 
 #predictBtn{
 
-    background:#2e86de;
+    background:#2563eb;
 
     color:white;
 
@@ -76,14 +94,44 @@ button{
 
 #clearBtn{
 
-    background:#e74c3c;
+    background:#ef4444;
 
     color:white;
 
 }
 
-.result{
+.result-card{
 
-    margin-top:20px;
+    margin-top:30px;
+
+    background:#f8fafc;
+
+    padding:20px;
+
+    border-radius:10px;
+
+}
+
+.result-card h2{
+
+    margin-top:10px;
+
+}
+
+#prediction{
+
+    font-size:40px;
+
+    font-weight:bold;
+
+    color:#2563eb;
+
+}
+
+#confidence{
+
+    font-size:24px;
+
+    color:#059669;
 
 }
